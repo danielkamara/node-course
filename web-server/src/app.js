@@ -1,15 +1,24 @@
 const path = require('path'),
-    express = require('express')
+    express = require('express'),
+    app = express()
 
-app = express()
 
-
+// Define paths for Express config
 const publicDirectoryPath = path.join(__dirname, '../public')
+const viewsPath = path.join(__dirname, '/templates')
 
-
+// Setup handlebars engine and views location
 app.set('view engine', 'hbs')
+app.set('views', viewsPath)
 app.use(express.static(publicDirectoryPath))
 
+// Setup static directory to serve
+app.get('', (req, res) => {
+    res.render('index', {
+        title: 'Weather App',
+        name: 'Daniel Kamara'
+    })
+})
 
 
 app.get('/about', (req, res) => {
@@ -20,12 +29,7 @@ app.get('/about', (req, res) => {
 })
 
 
-app.get('', (req, res) => {
-    res.render('index', {
-        title: 'Weather App',
-        name: 'Daniel Kamara'
-    })
-})
+
 
 
 
@@ -42,24 +46,6 @@ app.get('/weather', (req, res) => {
         weather: 'cold'
     }, )
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
