@@ -1,7 +1,10 @@
-const path = require('path'),
-    express = require('express'),
+const express = require('express'),
+    path = require('path'),
     hbs = require('hbs'),
-    app = express()
+    forecast = require('./utils/forecast'),
+    geocode = require('./utils/geocode')
+
+app = express()
 
 
 // Define paths for Express config
@@ -43,24 +46,43 @@ app.get('/help', (req, res) => {
 app.get('/weather', (req, res) => {
     if (!req.query.address) {
         return res.send({
-            error: 'You must provide an address'
+            err: 'You must provide an address'
         })
     }
-    res.send({
-        name: 'Texas',
-        weather: 'cold',
-        address: req.query.address
-    }, )
+
+    geocode(req.query.address, (err, {
+        lat,
+        lon,
+        location
+    }) => {
+        if (err) {
+            return res.send({
+                err
+            })
+        }
+        forecast(lat, lon, (err, forecastData) => {
+            if (err) {
+                return res.send({
+                    err
+                })
+            }
+            res.send({
+                forecast: forecastData,
+                location,
+                address: req.query.address
+            })
+        })
+    })
 })
 
 app.get('/products', (req, res) => {
     if (!req.query.search) {
         return res.send({
-            error: 'You must provide a search term'
+            err: 'You must provide a search term'
         })
     }
     console.log(req.query.search)
-  res.send({
+    res.send({
         products: []
     })
 })
