@@ -32,10 +32,6 @@ app.get('/about', (req, res) => {
 })
 
 
-
-
-
-
 app.get('/help', (req, res) => {
     res.render('help', {
         title: 'Help',
@@ -52,7 +48,21 @@ app.get('/weather', (req, res) => {
 })
 
 
+app.get('/help/*', (req, res) => {
+  res.render('404', {
+    title: '404',
+    name: 'Daniel',
+    errorMessage: 'Help article not found'
+  })
+})
 
+app.get('*', (req, res) => {
+res.render('404',{
+    title: '404',
+    name: 'Daniel',
+    errorMessage: 'Page Not Found'
+})
+})
 
 app.listen(3000, () => {
     console.log('Server is up on: http://localhost:3000/')
