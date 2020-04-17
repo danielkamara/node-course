@@ -4,7 +4,7 @@ const express = require('express'),
     forecast = require('./utils/forecast'),
     geocode = require('./utils/geocode')
 
-app = express()
+const app = express()
 
 
 // Define paths for Express config
@@ -54,7 +54,7 @@ app.get('/weather', (req, res) => {
         lat,
         lon,
         location
-    }) => {
+    } = {}) => {
         if (err) {
             return res.send({
                 err
@@ -66,6 +66,7 @@ app.get('/weather', (req, res) => {
                     err
                 })
             }
+
             res.send({
                 forecast: forecastData,
                 location,
