@@ -16,14 +16,39 @@ const User = mongoose.model('User', {
     }
 })
 
-const me = new User({
-    name: 'Daniel',
-    age: 36
+// const me = new User({
+//     name: 'Daniel',
+//     age: 36
+// })
+
+
+// me.save().then(() => {
+//     console.log(me)
+// }).catch((err) => {
+//     console.log('Error!', err)
+// })
+
+
+
+// 1. Define the model description and completed fields
+const Task = mongoose.model('Task', {
+    description: {
+        type: String
+    },
+    completed: {
+        type: Boolean
+    }
 })
 
+// 2. Create a new instance of the model
+const task = new Task({
+    description: 'Learn the Mongoose library',
+    completed: false
+})
 
-me.save().then(() => {
-    console.log(me)
+// 3. Save the model to the database
+task.save().then(() => {
+console.log(task)
 }).catch((err) => {
-    console.log('Error!', err)
-})
+console.log(err)
+}) 
