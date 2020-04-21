@@ -10,8 +10,6 @@ const mongoose = require('mongoose'),
 // 3. Trim the password
 // 4. Ensure the password doesn't contain "password"
 
-
-
 const User = mongoose.model('User', {
     name: {
         type: String,
