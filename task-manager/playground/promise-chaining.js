@@ -2,15 +2,32 @@ require('../src/db/mongoose')
 const User = require('../src/models/user')
 
 
-User.findByIdAndUpdate('5e9e584aa0908028f9e25e97', {
-    age: 1
-}).then((user) => {
-    console.log(user)
-    return User.countDocuments({
-        age: 1
+// User.findByIdAndUpdate('5e9e584aa0908028f9e25e97', {
+//     age: 1
+// }).then((user) => {
+//     console.log(user)
+//     return User.countDocuments({
+//         age: 1
+//     })
+// }).then((result) => {
+//     console.log(result)
+// }).catch((e) => {
+//     console.log(e)
+// })
+
+
+const updateAgeAndCount = async (id, age) => {
+    const user = await User.findByIdAndUpdate(id, {
+        age
     })
-}).then((result) => {
-    console.log(result)
+    const count = await User.countDocuments({
+        age
+    })
+    return count
+}
+
+updateAgeAndCount('5e9e584aa0908028f9e25e97', 2).then((count) => {
+    console.log(count)
 }).catch((e) => {
     console.log(e)
 })
