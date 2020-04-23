@@ -1,5 +1,6 @@
 const mongoose = require('mongoose'),
-    validator = require('validator')
+    validator = require('validator'),
+    bcrypt = require('bcryptjs')
 
 
 
@@ -10,7 +11,7 @@ const mongoose = require('mongoose'),
 // 3. Trim the password
 // 4. Ensure the password doesn't contain "password"
 
-const User = mongoose.model('User', {
+const userSchema = new mongoose.Schema({
     name: {
         type: String,
         required: true,
@@ -48,6 +49,17 @@ const User = mongoose.model('User', {
         }
     }
 })
+
+userSchema.pre('save', async function (next) {
+    const user = this
+    if (user.isModified('password')) {
+        user.password = await bcrypt.hash(user.password, 8)
+    }
+    next()
+})
+
+
+const User = mongoose.model('User', userSchema)
 
 
 
