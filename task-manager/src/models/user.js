@@ -53,20 +53,18 @@ const userSchema = new mongoose.Schema({
 
 userSchema.methods.generateAuthToken = async function () {
     const user = this
-    const token = jwt.sign({
-        _id: user.id.toString()
-    }, 'thisisagreatpassword')
-
-    user.tokens = user.tokens.concat({ token})
+    const token = jwt.sign({ _id: user.id.toString() }, 'ilovethiscourse')
+    user.tokens = user.tokens.concat({ token })
     await user.save()
-
     return token
 }
 
 userSchema.statics.findByCredentials = async (email, password) => {
+    
     const user = await User.findOne({
         email
     })
+    console.log(user)
 
     if (!user) {
         throw new Error('Unable to login')
