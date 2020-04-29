@@ -2,8 +2,7 @@ const mongoose = require('mongoose')
 
 
 
-// 1. Define the model description and completed fields
-const Task = mongoose.model('Task', {
+const taskSchema = new mongoose.Schema({
     description: {
         type: String,
         required: true,
@@ -16,9 +15,14 @@ const Task = mongoose.model('Task', {
 
     owner: {
         type: mongoose.Schema.Types.ObjectId,
-        required: true,  
+        required: true,
         ref: 'User'
     }
+}, {
+    timestamps: true
 })
+
+
+const Task = mongoose.model('Task', taskSchema)
 
 module.exports = Task
