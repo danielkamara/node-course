@@ -89,9 +89,9 @@ router.patch('/users/me', auth, async (req, res) => {
 })
 
 
-router.delete('/users/me', auth,  async (req, res) => {
+router.delete('/users/me', auth, async (req, res) => {
     try {
-        await req.user.remove ()
+        await req.user.remove()
         res.send(req.user)
     } catch (e) {
         res.status(500).send()
@@ -115,7 +115,7 @@ const upload = multer({
 
 
 router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) => {
-    req.user.avatar = req.file.buffer 
+    req.user.avatar = req.file.buffer
     await req.user.save()
     res.send()
 }, (error, req, res, next) => {
@@ -126,10 +126,23 @@ router.post('/users/me/avatar', auth, upload.single('avatar'), async (req, res) 
 
 router.delete('/users/me/avatar', auth, async (req, res) => {
     req.user.avatar = undefined
-      await req.user.save()
-      res.send()
+    await req.user.save()
+    res.send()
 })
 
 
+router.get('/users/:id/avatar', async (req, res) => {
+    try {
+        const user = await User.findById(req.params.id)
 
+        if (!user || !user.avatar) {
+            throw new Error
+        }
+        
+        res.set('Content-Type', 'image/jpg')
+        res.send(user.avatar)
+    } catch (e) {
+        res.status(404).send()
+    }
+})
 module.exports = router
